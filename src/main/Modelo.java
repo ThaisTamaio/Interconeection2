@@ -673,35 +673,11 @@ public class Modelo {
 	private void procesarAristasYDistancias(Landing landing1, Landing landing2, String cableId) {
 	    Edge existe1 = grafo.getEdge(landing1.getLandingId() + cableId, landing2.getLandingId() + cableId);
 
-	    if (existe1 == null) {
-	        float weight3 = distancia(landing1.getLongitude(), landing1.getLatitude(), landing2.getLongitude(), landing2.getLatitude());
-	        grafo.addEdge(landing1.getLandingId() + cableId, landing2.getLandingId() + cableId, weight3);
-	    } else {
-	        float weight3 = distancia(landing1.getLongitude(), landing1.getLatitude(), landing2.getLongitude(), landing2.getLatitude());
-	        float peso3 = existe1.getWeight();
 
-	        if (weight3 > peso3) {
-	            existe1.setWeight(weight3);
-	        }
-	    }
 	}
 	
 	private void procesarPaisesYVertices(Landing landing1, Landing landing2, String cableId) {
-	    String nombrePais1 = landing1.getPais();
-	    String nombrePais2 = landing2.getPais();
 
-	    Country pais1 = obtenerPais(nombrePais1);
-	    Country pais2 = obtenerPais(nombrePais2);
-
-	    if (pais1 != null) {
-	        float weight = distancia(pais1.getLongitude(), pais1.getLatitude(), landing1.getLongitude(), landing1.getLatitude());
-	        grafo.addEdge(pais1.getCapitalName(), landing1.getLandingId() + cableId, weight);
-	    }
-
-	    if (pais2 != null) {
-	        float weight2 = distancia(pais2.getLongitude(), pais2.getLatitude(), landing1.getLongitude(), landing1.getLatitude());
-	        grafo.addEdge(pais2.getCapitalName(), landing2.getLandingId() + cableId, weight2);
-	    }
 	}
 	
 	private Country obtenerPais(String nombrePais) {
@@ -720,45 +696,7 @@ public class Modelo {
 			Vertex vertice2= grafo.getVertex(landing2.getLandingId()+ cableid);
 			
 			ILista elementopc= (ILista) landingidtabla.get(landing1.getLandingId());
-			if (elementopc==null)
-			{
-				ILista valores=new ArregloDinamico(1);
-				valores.insertElement(vertice1, valores.size() +1);
 
-				landingidtabla.put(landing1.getLandingId(), valores);
-				
-			}
-			else if (elementopc!=null)
-			{
-				elementopc.insertElement(vertice1, elementopc.size()+1);
-			}
-		
-			elementopc= (ILista) landingidtabla.get(landing2.getLandingId());
-
-			if (elementopc==null)
-			{
-				ILista valores=new ArregloDinamico(1);
-				valores.insertElement(vertice2, valores.size() +1);
-
-				landingidtabla.put(landing2.getLandingId(), valores);
-
-			}
-			else if (elementopc!=null)
-			{
-				elementopc.insertElement(vertice2, elementopc.size()+1);
-
-			}
-			
-			elementopc= (ILista) nombrecodigo.get(landing1.getLandingId());
-			
-			if (elementopc==null)
-			{
-				String nombre=landing1.getName();
-				String codigo=landing1.getLandingId();
-
-				nombrecodigo.put(nombre, codigo);
-
-			}
 		}
 		catch(PosException | NullException e)
 		{
@@ -770,23 +708,7 @@ public class Modelo {
 		try
 		{
 			ILista valores = landingidtabla.valueSet();
-			
-			for(int i=1; i<=valores.size(); i++)
-			{
-				for(int j=1; j<=((ILista) valores.getElement(i)).size(); j++)
-				{
-					Vertex vertice1;
-					if((ILista) valores.getElement(i) != null)
-					{
-						vertice1= (Vertex) ((ILista) valores.getElement(i)).getElement(j);
-						for(int k=2; k<= ((ILista) valores.getElement(i)).size(); k++)
-						{
-							Vertex vertice2= (Vertex) ((ILista) valores.getElement(i)).getElement(k);
-							grafo.addEdge(vertice1.getId(), vertice2.getId(), 100);
-						}
-					}
-				}
-			}
+
 		}
 		catch(PosException | VacioException  e)
 		{
